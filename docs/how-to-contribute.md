@@ -1,6 +1,8 @@
 # Contributing to PowerShell Automation Portfolio
 
-Thank you for your interest in contributing to this PowerShell automation portfolio! This document provides guidelines for contributing code, documentation, and improvements.
+Thank you for your interest in contributing to this PowerShell automation portfolio! This document provides guidelines for contributing code, documentation, and improvements. 
+
+Looking ahead, there is potential for this repository to evolve into a GUI application capable of running automated PowerShell scripts for IT and Identity & Access Management (IAM) administration. Contributions that help lay the groundwork for future GUI integration, such as modular script design, robust error handling, and clear documentation, are especially valuable.
 
 ## 🤝 How to Contribute
 
