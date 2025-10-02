@@ -5,7 +5,7 @@
 ██╔══██╗██║░░░██║██╔══╝░░██╔══╝░░  ██║╚████║██╔══╝░░██╔══██╗██║░░██║
 ██████╦╝╚██████╔╝██║░░░░░██║░░░░░  ██║░╚███║███████╗██║░░██║██████╔╝
 ╚═════╝░░╚═════╝░╚═╝░░░░░╚═╝░░░░░  ╚═╝░░╚══╝╚══════╝╚═╝░░╚═╝╚═════╝░
--------Script by Aaron Voborny---https://github.com/buffnerd--------
+-------Scripts by Aaron Voborny---https://github.com/buffnerd-------
 Comprehensive PowerShell Automation Portfolio for IT and Security
 ```
 
