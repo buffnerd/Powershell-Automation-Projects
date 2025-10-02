@@ -18,6 +18,14 @@ build/
 .vscode/
 *.code-workspace
 
+# Windows
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
 # OS
 .DS_Store
 Thumbs.db
