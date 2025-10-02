@@ -24,6 +24,6 @@ Each project is stored in its own folder with documentation and scripts.
 ## Usage
 Clone this repository and explore each project folder:
 ```powershell
-git clone https://github.com/buffnerd/powershell-automation-portfolio.git
-cd powershell-automation-portfolio
+git clone https://github.com/buffnerd/Powershell-Automation-Projects.git
+cd Powershell-Automation-Projects
 ```
