@@ -1,3 +1,12 @@
+# ██████╗░██╗░░░██╗███████╗███████╗  ███╗░░██╗███████╗██████╗░██████╗░
+# ██╔══██╗██║░░░██║██╔════╝██╔════╝  ████╗░██║██╔════╝██╔══██╗██╔══██╗
+# ██████╦╝██║░░░██║█████╗░░█████╗░░  ██╔██╗██║█████╗░░██████╔╝██║░░██║
+# ██╔══██╗██║░░░██║██╔══╝░░██╔══╝░░  ██║╚████║██╔══╝░░██╔══██╗██║░░██║
+# ██████╦╝╚██████╔╝██║░░░░░██║░░░░░  ██║░╚███║███████╗██║░░██║██████╔╝
+# ╚═════╝░░╚═════╝░╚═╝░░░░░╚═╝░░░░░  ╚═╝░░╚══╝╚══════╝╚═╝░░╚═╝╚═════╝░
+# -------Script by Aaron Voborny---https://github.com/buffnerd--------
+# VPN and Proxy Chain Creation and Activation Script
+
 # VPN-Proxy-Chains-In-Powershell
 
 # This script sets up a VPN connection and three proxy servers, then sets up the VPN connection as the first proxy in the chain and the other two proxies as the second proxy in the chain. It then enables the use of the proxy chain and connects to the VPN. Finally, it confirms that the VPN connection has been established.

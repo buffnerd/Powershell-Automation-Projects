@@ -1,13 +1,74 @@
+```
 ██████╗░██╗░░░██╗███████╗███████╗  ███╗░░██╗███████╗██████╗░██████╗░
 ██╔══██╗██║░░░██║██╔════╝██╔════╝  ████╗░██║██╔════╝██╔══██╗██╔══██╗
 ██████╦╝██║░░░██║█████╗░░█████╗░░  ██╔██╗██║█████╗░░██████╔╝██║░░██║
 ██╔══██╗██║░░░██║██╔══╝░░██╔══╝░░  ██║╚████║██╔══╝░░██╔══██╗██║░░██║
 ██████╦╝╚██████╔╝██║░░░░░██║░░░░░  ██║░╚███║███████╗██║░░██║██████╔╝
 ╚═════╝░░╚═════╝░╚═╝░░░░░╚═╝░░░░░  ╚═╝░░╚══╝╚══════╝╚═╝░░╚═╝╚═════╝░
+-------Script by Aaron Voborny---https://github.com/buffnerd--------
+Bulk Active Directory Proxy Address Attribute Management Scripts
+```
+╚═════╝░░╚═════╝░╚═╝░░░░░╚═╝░░░░░  ╚═╝░░╚══╝╚══════╝╚═╝░░╚═╝╚═════╝░
 
-# Bulk-Updating-Proxy-Address-Attributes
+# 📧 Bulk Updating Proxy Address Attributes
 
-This is a PowerShell script that can update large numbers of Proxy Addresses in Active Directory
+PowerShell automation for mass updating proxy address attributes in Active Directory, enabling efficient management of large-scale email address modifications.
+
+## 🎯 Project Overview
+
+This project provides a systematic approach to bulk updating proxy addresses in Active Directory using CSV-driven automation, essential for Exchange and Office 365 migrations.
+
+## 📁 Project Files
+
+- **`1st-script.ps1`** - Queries Active Directory users from specified OU
+- **`2nd-script.ps1`** - Performs bulk proxy address updates from CSV data
+
+## 📋 Prerequisites
+
+### **Required Software**
+- **PowerShell 5.1 or later** (PowerShell 7+ recommended)
+- **Active Directory PowerShell Module** (RSAT Tools)
+- **Microsoft Excel** or CSV editor for data preparation
+- **Administrative PowerShell session** (Run as Administrator)
+
+### **Active Directory Requirements**
+- **Domain Controller access** for user queries and updates
+- **Active Directory Domain Services** environment
+- **Exchange Schema** (if working with Exchange attributes)
+- **Target Organizational Unit** properly configured
+
+### **Required Permissions**
+- **Domain Admin** or **delegated permissions** for user attribute modification
+- **Write access** to proxyAddresses attribute in target OU
+- **Read permissions** for Active Directory user objects
+- **Administrative rights** on workstation running scripts
+
+### **Module Installation**
+```powershell
+# Install RSAT Tools for Active Directory module
+Get-WindowsCapability -Name RSAT* -Online | Add-WindowsCapability -Online
+
+# Import Active Directory module
+Import-Module ActiveDirectory
+
+# Verify module is available
+Get-Module -ListAvailable ActiveDirectory
+```
+
+### **Data Preparation Requirements**
+- **CSV file** with proper LDAP attribute column names
+- **Unique identifier column** (samAccountName recommended)
+- **proxyAddresses column** with comma-separated values
+- **Backup of existing data** before making changes
+
+### **Environment Setup**
+- **Network connectivity** to Domain Controllers
+- **PowerShell execution policy** configured for script execution
+- **Test environment** for validation before production use
+
+## ⚠️ Critical Safety Notes
+
+**ALWAYS test on small groups first!** Making mistakes on bulk updates can cause unnecessary rework and tie up critical resources. **MEASURE TWICE, CUT ONCE!**
 
 Step 1.)  Pull a .csv report from Active Directory that includes:
               a.)  One unique identifier (such as an employee number, or SAM Account Name)

@@ -1,5 +1,74 @@
-# Restore-AD
-Powershell Automation Script that checks for an existing OU and if it doesn't exist then it restores it with backup data.  The backup data file needs to be in the same directory as the script.  You may change certain information in this script depending on your needs.  In this script, I have created a Finance OU.  The sample data is fake data.
+```
+██████╗░██╗░░░██╗███████╗███████╗  ███╗░░██╗███████╗██████╗░██████╗░
+██╔══██╗██║░░░██║██╔════╝██╔════╝  ████╗░██║██╔════╝██╔══██╗██╔══██╗
+██████╦╝██║░░░██║█████╗░░█████╗░░  ██╔██╗██║█████╗░░██████╔╝██║░░██║
+██╔══██╗██║░░░██║██╔══╝░░██╔══╝░░  ██║╚████║██╔══╝░░██╔══██╗██║░░██║
+██████╦╝╚██████╔╝██║░░░░░██║░░░░░  ██║░╚███║███████╗██║░░██║██████╔╝
+╚═════╝░░╚═════╝░╚═╝░░░░░╚═╝░░░░░  ╚═╝░░╚══╝╚══════╝╚═╝░░╚═╝╚═════╝░
+-------Script by Aaron Voborny---https://github.com/buffnerd--------
+Active Directory Disaster Recovery and Organizational Unit Restoration
+```
+
+# 🔄 Restore Active Directory
+
+PowerShell automation script for Active Directory disaster recovery, providing systematic OU restoration with user data import from backup files.
+
+## 🎯 Project Overview
+
+This script automates the complete restoration process for Active Directory Organizational Units, including user account recreation from CSV backup data, ensuring business continuity during disaster recovery scenarios.
+
+## 📁 Project Files
+
+- **`Restore-AD.ps1`** - Complete AD OU restoration automation script
+- **`financePersonnel.csv`** - Sample backup data file (place in same directory)
+
+## 📋 Prerequisites
+
+### **Required Software**
+- **PowerShell 5.1 or later** (PowerShell 7+ recommended)
+- **Active Directory PowerShell Module** (RSAT Tools)
+- **Windows Server** with Active Directory Domain Services
+- **Administrative PowerShell session** (Run as Administrator)
+
+### **Active Directory Requirements**
+- **Domain Controller access** with full administrative privileges
+- **Active Directory Domain Services** running and accessible
+- **Target domain** (script uses "consultingfirm.com" - modify as needed)
+- **Schema permissions** for OU and user object creation
+
+### **Required Permissions**
+- **Domain Admin** privileges or equivalent delegated permissions
+- **Full control** over target domain and OU creation
+- **User creation permissions** in Active Directory
+- **ProtectedFromAccidentalDeletion** modification rights
+
+### **Module Installation**
+```powershell
+# Install RSAT Tools for Active Directory module
+Get-WindowsCapability -Name RSAT* -Online | Add-WindowsCapability -Online
+
+# Import Active Directory module
+Import-Module ActiveDirectory
+
+# Verify Domain Controller connectivity
+Get-ADDomain
+```
+
+### **Data Requirements**
+- **CSV backup file** (`financePersonnel.csv`) in same directory as script
+- **Proper CSV format** with columns: First_Name, Last_Name, PostalCode, OfficePhone, MobilePhone
+- **Valid user data** for account creation
+- **Backup verification** before running restoration
+
+### **Environment Setup**
+- **Network connectivity** to Domain Controllers
+- **PowerShell execution policy** configured for script execution
+- **Administrative credentials** for AD operations
+- **Test environment** recommended before production use
+
+## ⚠️ Important Safety Notes
+
+This script will **DELETE existing OUs** if they exist before recreation. Ensure you have proper backups and test in a non-production environment first. The sample data included is fake data for demonstration purposes only.
 
 This PowerShell script automates several tasks related to Active Directory management. Here's a comprehensive explanation of what each part of the script does:
 

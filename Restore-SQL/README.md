@@ -1,7 +1,57 @@
-# Restore-SQL
-Powershell Automation Script that checks for an existing SQL DB and if it doesn't exist then it restores it with backup data. The backup data file needs to be in the same directory as the script. You may change certain information in this script depending on your needs.
+```
+██████╗░██╗░░░██╗███████╗███████╗  ███╗░░██╗███████╗██████╗░██████╗░
+██╔══██╗██║░░░██║██╔════╝██╔════╝  ████╗░██║██╔════╝██╔══██╗██╔══██╗
+██████╦╝██║░░░██║█████╗░░█████╗░░  ██╔██╗██║█████╗░░██████╔╝██║░░██║
+██╔══██╗██║░░░██║██╔══╝░░██╔══╝░░  ██║╚████║██╔══╝░░██╔══██╗██║░░██║
+██████╦╝╚██████╔╝██║░░░░░██║░░░░░  ██║░╚███║███████╗██║░░██║██████╔╝
+╚═════╝░░╚═════╝░╚═╝░░░░░╚═╝░░░░░  ╚═╝░░╚══╝╚══════╝╚═╝░░╚═╝╚═════╝░
+-------Script by Aaron Voborny---https://github.com/buffnerd--------
+SQL Server Database Restoration and Automated Management Script
+```
 
-NOTE: There are 3 .sql files included which are dependencies for the script to work.  The 3rd dependency "Client_A_Contacts.sql" calls an existing backup .csv file from within the same directory.  If you are using this for your own implementation, you may need to change some pathing in the .sql file and .csv file as well as rename them according to suit your needs.
+# Restore-SQL
+PowerShell automation script that checks for an existing SQL database and restores it with backup data. The script provides automated database management capabilities including existence checking, deletion, creation, and data import.
+
+## Prerequisites
+
+### Software Requirements
+- **PowerShell 5.1+** or **PowerShell 7+**
+- **SQL Server Express** (or full SQL Server instance)
+- **SQL Server Management Tools** (SQLCMD)
+- **SqlServer PowerShell Module** or **SQLPS Module**
+
+### Permissions Required
+- **SQL Server Administrator** privileges or **db_owner** role
+- **Windows Authentication** configured for SQL Server access
+- **File system permissions** to read/write in script directory
+
+### Module Installation
+```powershell
+# Install SqlServer module (recommended)
+Install-Module -Name SqlServer -Force -AllowClobber
+
+# Or use legacy SQLPS module if SqlServer module unavailable
+Import-Module SQLPS -DisableNameChecking
+```
+
+### Data Requirements
+- **Backup SQL files** (.sql) in same directory as script
+- **CSV data files** referenced by SQL scripts
+- **Proper file permissions** for PowerShell to access all files
+- **Consistent file naming** as referenced in SQL scripts
+
+### Network Configuration
+- **SQL Server instance** accessible (default: `.\SQLEXPRESS`)
+- **TCP/IP protocols enabled** for SQL Server
+- **Firewall exceptions** for SQL Server ports if needed
+
+### Safety Notes
+⚠️ **WARNING**: This script will **DROP existing databases** if they exist
+⚠️ **BACKUP**: Always backup existing databases before running
+⚠️ **TEST**: Run in development environment first
+⚠️ **VERIFY**: Confirm SQL scripts and CSV files are correct before execution
+
+**NOTE**: There are 3 .sql files included which are dependencies for the script to work. The 3rd dependency "Client_A_Contacts.sql" calls an existing backup .csv file from within the same directory. If you are using this for your own implementation, you may need to change some pathing in the .sql file and .csv file as well as rename them according to suit your needs.
 
 This PowerShell script performs a series of actions related to Microsoft SQL Server database management. Here's a comprehensive explanation of what each part of the script does:
 

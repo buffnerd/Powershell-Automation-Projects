@@ -4,8 +4,8 @@
 # ██╔══██╗██║░░░██║██╔══╝░░██╔══╝░░  ██║╚████║██╔══╝░░██╔══██╗██║░░██║
 # ██████╦╝╚██████╔╝██║░░░░░██║░░░░░  ██║░╚███║███████╗██║░░██║██████╔╝
 # ╚═════╝░░╚═════╝░╚═╝░░░░░╚═╝░░░░░  ╚═╝░░╚══╝╚══════╝╚═╝░░╚═╝╚═════╝░
-# ------------------Script by Aaron Voborny---------------------------
-# Automation Script that Restores a departmental OU from a backup file
+# -------Script by Aaron Voborny---https://github.com/buffnerd--------
+# Active Directory Organizational Unit Restoration Script
 
 # Check for the existence of an Active Directory Organizational Unit (OU) named "Finance"
 $ouExists = Get-ADOrganizationalUnit -Filter { Name -eq "Finance" } -ErrorAction SilentlyContinue

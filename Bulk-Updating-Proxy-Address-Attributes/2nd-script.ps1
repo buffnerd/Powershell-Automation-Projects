@@ -1,3 +1,12 @@
+# ██████╗░██╗░░░██╗███████╗███████╗  ███╗░░██╗███████╗██████╗░██████╗░
+# ██╔══██╗██║░░░██║██╔════╝██╔════╝  ████╗░██║██╔════╝██╔══██╗██╔══██╗
+# ██████╦╝██║░░░██║█████╗░░█████╗░░  ██╔██╗██║█████╗░░██████╔╝██║░░██║
+# ██╔══██╗██║░░░██║██╔══╝░░██╔══╝░░  ██║╚████║██╔══╝░░██╔══██╗██║░░██║
+# ██████╦╝╚██████╔╝██║░░░░░██║░░░░░  ██║░╚███║███████╗██║░░██║██████╔╝
+# ╚═════╝░░╚═════╝░╚═╝░░░░░╚═╝░░░░░  ╚═╝░░╚══╝╚══════╝╚═╝░░╚═╝╚═════╝░
+# -------Script by Aaron Voborny---https://github.com/buffnerd--------
+# Bulk Proxy Address Update Script for Active Directory Users
+
 # In your elevated PowerShell Prompt, run a command which pulls the .csv and triggers the proxyAddresses attribute to be updated with the information in the proxyAddresses column in your CSV for users in the selected OU based on their SAM Account Name for the unique identifier. That command will look something like this:
 
 Import-Csv "C:\Users\adminaccount\scripts\bulk-update-proxy-addresses.csv" | ForEach-Object {
