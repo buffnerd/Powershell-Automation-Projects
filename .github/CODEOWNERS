@@ -1,0 +1,21 @@
+# CODEOWNERS file for PowerShell Automation Portfolio
+# This file defines who owns and reviews changes to different parts of the repository
+# 
+# Global ownership - Aaron Voborny (Vobotech) owns all files by default
+* @buffnerd
+
+# Category-specific ownership
+categories/UserAccountManagement/ @buffnerd
+categories/SystemHealthChecks/ @buffnerd
+categories/SecurityComplianceChecks/ @buffnerd
+categories/AzureAutomation/ @buffnerd
+categories/BackupVerification/ @buffnerd
+categories/LogCollectionAnalysis/ @buffnerd
+
+# Documentation and project files
+docs/ @buffnerd
+README.md @buffnerd
+LICENSE @buffnerd
+
+# CI/CD and GitHub configuration
+.github/ @buffnerd
