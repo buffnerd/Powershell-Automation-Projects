@@ -20,8 +20,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
----
-
-**Note:**  
-These scripts are provided primarily for **educational and demonstration purposes** as part of my professional portfolio.  
-If you adapt them for production use, please test carefully and modify paths, domains, or environment variables as appropriate for your unique environment.
+Note:
+These scripts are provided primarily for educational and demonstration purposes as part of my professional portfolio.
+If you adapt them for production use, please test carefully and modify environment-specific details (domains, file paths, variables).
