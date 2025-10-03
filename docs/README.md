@@ -10,16 +10,27 @@ Each project demonstrates practical PowerShell solutions for real-world IT chall
 
 ```
 powershell-automation-portfolio/
-├─ Basic-Powershell-Administration/     # Foundational admin scripts
-├─ Monitor-Failed-Logins/               # Security monitoring and alerting
-├─ Sentinel-Lab/                        # Azure Sentinel SIEM integration
-├─ VPN-Proxy-Chains-In-Powershell/      # Network automation
-├─ Azure-PowerShell-Scripts/            # Cloud automation
-├─ Bulk-Updating-Proxy-Address-Attributes/ # AD bulk operations
-├─ Restore-AD/                          # Active Directory recovery
-├─ Restore-SQL/                         # SQL Server backup/restore
-├─ SSL-TLS-disable/                     # Security hardening
-├─ Sysmon-XML-Configurations/           # System monitoring
+├─ Identity-Access-Management/          # User accounts, permissions, Group Policy
+│  ├─ UserAccountManagement/            # AD user lifecycle management
+│  ├─ PermissionAuditing/               # NTFS and access rights analysis
+│  └─ GroupPolicyManagement/            # GPO management and reporting
+├─ System-Infrastructure-Maintenance/   # System health and maintenance
+│  ├─ SystemHealthChecks/               # Performance monitoring
+│  ├─ ServiceMonitoring/                # Service monitoring and restart
+│  ├─ SoftwareManagement/               # Software installation and updates
+│  └─ FileSystemCleanup/                # Cleanup and archival processes
+├─ Networking-Resources/                # Network infrastructure management
+│  ├─ NetworkDriveManagement/           # Drive mapping automation
+│  └─ PrinterManagement/                # Network printer deployment
+├─ Data-Protection-Recovery/            # Backup and log analysis
+│  ├─ BackupVerification/               # Backup integrity and restoration
+│  └─ LogCollectionAnalysis/            # Security event analysis and SIEM
+├─ Security-Compliance/                 # Security auditing and compliance
+│  ├─ SecurityComplianceChecks/         # Security auditing and TLS hardening
+│  ├─ InventoryAssetReporting/          # Hardware and software inventory
+│  ├─ RemoteComputerManagement/         # Remote administration
+│  └─ OutlookExchangeAutomation/        # Email system automation
+├─ categories/AzureAutomation/          # Cloud infrastructure automation
 ├─ scripts/                             # Shared utilities
 ├─ docs/                                # Documentation
 └─ .github/workflows/                   # CI/CD automation
@@ -27,18 +38,25 @@ powershell-automation-portfolio/
 
 ## 🚀 Featured Projects
 
-### Security & Monitoring
-- **Monitor-Failed-Logins**: Real-time security event monitoring with geo-IP analysis
-- **Sentinel-Lab**: Azure Sentinel integration for enterprise SIEM
-- **SSL-TLS-disable**: Security hardening through deprecated protocol removal
+### Identity & Access Management
+- **UserAccountManagement**: AD user lifecycle, bulk operations, password management
+- **PermissionAuditing**: NTFS permissions and access rights analysis
+- **GroupPolicyManagement**: GPO analysis, export, and conflict detection
 
-### Active Directory Management
-- **Bulk-Updating-Proxy-Address-Attributes**: Mass AD attribute management
-- **Restore-AD**: Comprehensive AD disaster recovery solutions
+### System & Infrastructure Maintenance
+- **SystemHealthChecks**: Performance monitoring, resource tracking, health reporting
+- **ServiceMonitoring**: Critical service monitoring and automated restart
+- **SoftwareManagement**: Automated installation, updates, and patch compliance
+- **FileSystemCleanup**: Automated cleanup and archival processes
 
-### Cloud Automation
-- **Azure-PowerShell-Scripts**: Azure resource management and automation
-- **VPN-Proxy-Chains-In-Powershell**: Network infrastructure automation
+### Security & Compliance
+- **SecurityComplianceChecks**: Security auditing, TLS hardening, Sysmon configurations
+- **InventoryAssetReporting**: Hardware and software inventory automation
+- **RemoteComputerManagement**: Remote administration and firewall configuration
+
+### Data Protection & Recovery
+- **BackupVerification**: Backup integrity validation and restoration testing
+- **LogCollectionAnalysis**: Security event analysis and Azure Sentinel SIEM integration
 
 ## 🛠️ Development Standards
 
