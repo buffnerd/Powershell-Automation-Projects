@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sysmon schemaversion="4.40">
+  <HashAlgorithms>md5,sha256</HashAlgorithms>
+  <CheckRevocation/>
+  <EventFiltering>
+    <!-- Event ID 12: RegistryEvent (Object create and delete) - Sensitive Registry Access -->
+    <RuleGroup name="" groupRelation="or">
+      <RegistryEvent onmatch="include">
+        <!-- Monitor access to SAM (Security Account Manager) -->
+        <TargetObject condition="contains">HKLM\SAM\SAM\Domains\Account\Users</TargetObject>
+        <TargetObject condition="contains">HKLM\SAM\SAM\Domains\Builtin\Aliases</TargetObject>
+        
+        <!-- Monitor access to Security registry -->
+        <TargetObject condition="contains">HKLM\SECURITY\Policy\Accounts</TargetObject>
+        <TargetObject condition="contains">HKLM\SECURITY\Policy\Secrets</TargetObject>
+        <TargetObject condition="contains">HKLM\SECURITY\Cache</TargetObject>
+        
+        <!-- Monitor access to LSA secrets -->
+        <TargetObject condition="contains">HKLM\SECURITY\Policy\Secrets\$MACHINE.ACC</TargetObject>
+        <TargetObject condition="contains">HKLM\SECURITY\Policy\Secrets\DPAPI_SYSTEM</TargetObject>
+        <TargetObject condition="contains">HKLM\SECURITY\Policy\Secrets\NL$KM</TargetObject>
+        
+        <!-- Monitor Windows authentication settings -->
+        <TargetObject condition="contains">HKLM\SYSTEM\CurrentControlSet\Control\Lsa</TargetObject>
+        <TargetObject condition="contains">HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon</TargetObject>
+        <TargetObject condition="end with">\AutoAdminLogon</TargetObject>
+        <TargetObject condition="end with">\DefaultPassword</TargetObject>
+        <TargetObject condition="end with">\DefaultUserName</TargetObject>
+        <TargetObject condition="end with">\DefaultDomainName</TargetObject>
+        
+        <!-- Monitor Security Providers (SCHANNEL, Kerberos, etc.) -->
+        <TargetObject condition="contains">HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders</TargetObject>
+        <TargetObject condition="contains">HKLM\SYSTEM\CurrentControlSet\Control\Lsa\Kerberos</TargetObject>
+        <TargetObject condition="contains">HKLM\SYSTEM\CurrentControlSet\Control\Lsa\MSV1_0</TargetObject>
+        
+        <!-- Monitor User Account Control (UAC) settings -->
+        <TargetObject condition="contains">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System</TargetObject>
+        <TargetObject condition="end with">\EnableLUA</TargetObject>
+        <TargetObject condition="end with">\ConsentPromptBehaviorAdmin</TargetObject>
+        <TargetObject condition="end with">\ConsentPromptBehaviorUser</TargetObject>
+        <TargetObject condition="end with">\PromptOnSecureDesktop</TargetObject>
+        <TargetObject condition="end with">\FilterAdministratorToken</TargetObject>
+        
+        <!-- Monitor Windows Defender settings -->
+        <TargetObject condition="contains">HKLM\SOFTWARE\Microsoft\Windows Defender</TargetObject>
+        <TargetObject condition="contains">HKLM\SOFTWARE\Policies\Microsoft\Windows Defender</TargetObject>
+        <TargetObject condition="end with">\DisableAntiSpyware</TargetObject>
+        <TargetObject condition="end with">\DisableAntiVirus</TargetObject>
+        <TargetObject condition="end with">\DisableRealtimeMonitoring</TargetObject>
+        
+        <!-- Monitor Windows Firewall settings -->
+        <TargetObject condition="contains">HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy</TargetObject>
+        <TargetObject condition="end with">\EnableFirewall</TargetObject>
+        <TargetObject condition="end with">\DisableNotifications</TargetObject>
+        
+        <!-- Monitor audit policy settings -->
+        <TargetObject condition="contains">HKLM\SECURITY\Policy\PolAdtEv</TargetObject>
+        <TargetObject condition="contains">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit</TargetObject>
+        
+        <!-- Monitor Terminal Services / RDP settings -->
+        <TargetObject condition="contains">HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server</TargetObject>
+        <TargetObject condition="end with">\fDenyTSConnections</TargetObject>
+        <TargetObject condition="end with">\UserAuthentication</TargetObject>
+        <TargetObject condition="end with">\SecurityLayer</TargetObject>
+        
+        <!-- Monitor WinRM / PowerShell Remoting settings -->
+        <TargetObject condition="contains">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WSMAN</TargetObject>
+        <TargetObject condition="contains">HKLM\SOFTWARE\Policies\Microsoft\Windows\WinRM</TargetObject>
+        
+        <!-- Monitor Group Policy settings -->
+        <TargetObject condition="contains">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Group Policy</TargetObject>
+        <TargetObject condition="contains">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies</TargetObject>
+        
+        <!-- Monitor credential provider settings -->
+        <TargetObject condition="contains">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\Credential Providers</TargetObject>
+        <TargetObject condition="contains">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\PLAP Providers</TargetObject>
+        
+        <!-- Monitor certificate settings -->
+        <TargetObject condition="contains">HKLM\SOFTWARE\Microsoft\SystemCertificates</TargetObject>
+        <TargetObject condition="contains">HKLM\SOFTWARE\Policies\Microsoft\SystemCertificates</TargetObject>
+        
+        <!-- Monitor DPAPI settings -->
+        <TargetObject condition="contains">HKLM\SOFTWARE\Microsoft\Cryptography\Protect</TargetObject>
+        <TargetObject condition="contains">HKCU\SOFTWARE\Microsoft\Cryptography\Protect</TargetObject>
+        
+        <!-- Monitor network security settings -->
+        <TargetObject condition="contains">HKLM\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters</TargetObject>
+        <TargetObject condition="contains">HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters</TargetObject>
+        <TargetObject condition="end with">\RequireSecuritySignature</TargetObject>
+        <TargetObject condition="end with">\EnableSecuritySignature</TargetObject>
+        
+        <!-- Monitor NTLM settings -->
+        <TargetObject condition="contains">HKLM\SYSTEM\CurrentControlSet\Control\Lsa\MSV1_0</TargetObject>
+        <TargetObject condition="end with">\NtlmMinClientSec</TargetObject>
+        <TargetObject condition="end with">\NtlmMinServerSec</TargetObject>
+        <TargetObject condition="end with">\RestrictSendingNTLMTraffic</TargetObject>
+        
+        <!-- Monitor privilege and rights assignment -->
+        <TargetObject condition="contains">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System</TargetObject>
+        <TargetObject condition="end with">\UndockWithoutLogon</TargetObject>
+        <TargetObject condition="end with">\ShutdownWithoutLogon</TargetObject>
+        <TargetObject condition="end with">\DisableCAD</TargetObject>
+      </RegistryEvent>
+    </RuleGroup>
+
+    <!-- Event ID 13: RegistryEvent (Value Set) - Sensitive Registry Value Changes -->
+    <RuleGroup name="" groupRelation="or">
+      <RegistryEvent onmatch="include">
+        <!-- Monitor changes to security-critical values -->
+        <TargetObject condition="contains">HKLM\SYSTEM\CurrentControlSet\Control\Lsa</TargetObject>
+        <TargetObject condition="end with">\LmCompatibilityLevel</TargetObject>
+        <TargetObject condition="end with">\NoLMHash</TargetObject>
+        <TargetObject condition="end with">\RestrictAnonymous</TargetObject>
+        <TargetObject condition="end with">\RestrictAnonymousSAM</TargetObject>
+        <TargetObject condition="end with">\EveryoneIncludesAnonymous</TargetObject>
+        
+        <!-- Monitor UAC value changes -->
+        <TargetObject condition="contains">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System</TargetObject>
+        <TargetObject condition="end with">\EnableLUA</TargetObject>
+        <TargetObject condition="end with">\ConsentPromptBehaviorAdmin</TargetObject>
+        <TargetObject condition="end with">\ConsentPromptBehaviorUser</TargetObject>
+        <TargetObject condition="end with">\PromptOnSecureDesktop</TargetObject>
+        
+        <!-- Monitor Windows Defender value changes -->
+        <TargetObject condition="contains">HKLM\SOFTWARE\Microsoft\Windows Defender</TargetObject>
+        <TargetObject condition="contains">HKLM\SOFTWARE\Policies\Microsoft\Windows Defender</TargetObject>
+        <TargetObject condition="end with">\DisableAntiSpyware</TargetObject>
+        <TargetObject condition="end with">\DisableAntiVirus</TargetObject>
+        <TargetObject condition="end with">\DisableRealtimeMonitoring</TargetObject>
+        
+        <!-- Monitor automatic logon settings -->
+        <TargetObject condition="contains">HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon</TargetObject>
+        <TargetObject condition="end with">\AutoAdminLogon</TargetObject>
+        <TargetObject condition="end with">\DefaultPassword</TargetObject>
+        <TargetObject condition="end with">\DefaultUserName</TargetObject>
+        
+        <!-- Monitor RDP/Terminal Services changes -->
+        <TargetObject condition="contains">HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server</TargetObject>
+        <TargetObject condition="end with">\fDenyTSConnections</TargetObject>
+        <TargetObject condition="end with">\UserAuthentication</TargetObject>
+        
+        <!-- Monitor firewall settings -->
+        <TargetObject condition="contains">HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy</TargetObject>
+        <TargetObject condition="end with">\EnableFirewall</TargetObject>
+        
+        <!-- Monitor PowerShell execution policy -->
+        <TargetObject condition="contains">HKLM\SOFTWARE\Microsoft\PowerShell</TargetObject>
+        <TargetObject condition="contains">HKCU\SOFTWARE\Microsoft\PowerShell</TargetObject>
+        <TargetObject condition="end with">\ExecutionPolicy</TargetObject>
+        
+        <!-- Monitor script block logging -->
+        <TargetObject condition="contains">HKLM\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging</TargetObject>
+        <TargetObject condition="end with">\EnableScriptBlockLogging</TargetObject>
+        
+        <!-- Monitor module logging -->
+        <TargetObject condition="contains">HKLM\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging</TargetObject>
+        <TargetObject condition="end with">\EnableModuleLogging</TargetObject>
+        
+        <!-- Monitor transcription logging -->
+        <TargetObject condition="contains">HKLM\SOFTWARE\Policies\Microsoft\Windows\PowerShell\Transcription</TargetObject>
+        <TargetObject condition="end with">\EnableTranscripting</TargetObject>
+      </RegistryEvent>
+    </RuleGroup>
+
+    <!-- Event ID 1: Process creation - Registry access tools -->
+    <RuleGroup name="" groupRelation="or">
+      <ProcessCreate onmatch="include">
+        <!-- Monitor reg.exe usage -->
+        <Image condition="end with">reg.exe</Image>
+        <CommandLine condition="contains">HKLM\SAM</CommandLine>
+        <CommandLine condition="contains">HKLM\SECURITY</CommandLine>
+        <CommandLine condition="contains">HKLM\SYSTEM</CommandLine>
+        <CommandLine condition="contains">CurrentControlSet\Control\Lsa</CommandLine>
+        <CommandLine condition="contains">Winlogon</CommandLine>
+        
+        <!-- Monitor regedit.exe usage -->
+        <Image condition="end with">regedit.exe</Image>
+        
+        <!-- Monitor PowerShell registry access -->
+        <Image condition="end with">powershell.exe</Image>
+        <CommandLine condition="contains">Get-ItemProperty</CommandLine>
+        <CommandLine condition="contains">Set-ItemProperty</CommandLine>
+        <CommandLine condition="contains">New-ItemProperty</CommandLine>
+        <CommandLine condition="contains">Remove-ItemProperty</CommandLine>
+        <CommandLine condition="contains">HKLM:</CommandLine>
+        <CommandLine condition="contains">Registry::</CommandLine>
+        
+        <!-- Monitor WMIC registry queries -->
+        <Image condition="end with">wmic.exe</Image>
+        <CommandLine condition="contains">process</CommandLine>
+        <CommandLine condition="contains">service</CommandLine>
+        <CommandLine condition="contains">useraccount</CommandLine>
+        
+        <!-- Monitor bcdedit for boot configuration -->
+        <Image condition="end with">bcdedit.exe</Image>
+        
+        <!-- Monitor schtasks for scheduled task registry access -->
+        <Image condition="end with">schtasks.exe</Image>
+        
+        <!-- Monitor netsh for network security settings -->
+        <Image condition="end with">netsh.exe</Image>
+        <CommandLine condition="contains">firewall</CommandLine>
+        <CommandLine condition="contains">advfirewall</CommandLine>
+        <CommandLine condition="contains">ipsec</CommandLine>
+      </ProcessCreate>
+    </RuleGroup>
+  </EventFiltering>
+</Sysmon>

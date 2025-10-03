@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sysmon schemaversion="4.40">
+  <HashAlgorithms>md5,sha256</HashAlgorithms>
+  <CheckRevocation/>
+  <EventFiltering>
+    <!-- Event ID 12: RegistryEvent (Object create and delete) - Service Creation -->
+    <RuleGroup name="" groupRelation="or">
+      <RegistryEvent onmatch="include">
+        <!-- Monitor service creation in registry -->
+        <TargetObject condition="contains">HKLM\SYSTEM\CurrentControlSet\Services\</TargetObject>
+        <TargetObject condition="contains">HKLM\SYSTEM\ControlSet001\Services\</TargetObject>
+        <TargetObject condition="contains">HKLM\SYSTEM\ControlSet002\Services\</TargetObject>
+        
+        <!-- Monitor service configuration changes -->
+        <TargetObject condition="end with">\ImagePath</TargetObject>
+        <TargetObject condition="end with">\Start</TargetObject>
+        <TargetObject condition="end with">\Type</TargetObject>
+        <TargetObject condition="end with">\ErrorControl</TargetObject>
+        <TargetObject condition="end with">\DisplayName</TargetObject>
+        <TargetObject condition="end with">\Description</TargetObject>
+        <TargetObject condition="end with">\ServiceDll</TargetObject>
+        <TargetObject condition="end with">\ObjectName</TargetObject>
+        
+        <!-- Monitor service dependencies -->
+        <TargetObject condition="end with">\DependOnService</TargetObject>
+        <TargetObject condition="end with">\DependOnGroup</TargetObject>
+        
+        <!-- Monitor service security settings -->
+        <TargetObject condition="end with">\Security</TargetObject>
+        <TargetObject condition="end with">\RequiredPrivileges</TargetObject>
+        
+        <!-- Monitor service failure actions -->
+        <TargetObject condition="end with">\FailureActions</TargetObject>
+        <TargetObject condition="end with">\RebootMessage</TargetObject>
+        <TargetObject condition="end with">\FailureCommand</TargetObject>
+      </RegistryEvent>
+    </RuleGroup>
+
+    <!-- Event ID 13: RegistryEvent (Value Set) - Service Configuration -->
+    <RuleGroup name="" groupRelation="or">
+      <RegistryEvent onmatch="include">
+        <!-- Monitor service configuration value changes -->
+        <TargetObject condition="contains">HKLM\SYSTEM\CurrentControlSet\Services\</TargetObject>
+        <TargetObject condition="contains">HKLM\SYSTEM\ControlSet001\Services\</TargetObject>
+        <TargetObject condition="contains">HKLM\SYSTEM\ControlSet002\Services\</TargetObject>
+        
+        <!-- Focus on critical service configuration values -->
+        <TargetObject condition="end with">\ImagePath</TargetObject>
+        <TargetObject condition="end with">\Start</TargetObject>
+        <TargetObject condition="end with">\Type</TargetObject>
+        <TargetObject condition="end with">\ServiceDll</TargetObject>
+        <TargetObject condition="end with">\ObjectName</TargetObject>
+        <TargetObject condition="end with">\DisplayName</TargetObject>
+        
+        <!-- Monitor service startup configuration -->
+        <TargetObject condition="end with">\DelayedAutostart</TargetObject>
+        <TargetObject condition="end with">\PreShutdownTimeout</TargetObject>
+        <TargetObject condition="end with">\PreshutdownTimeout</TargetObject>
+        
+        <!-- Monitor service triggers -->
+        <TargetObject condition="contains">\TriggerInfo\</TargetObject>
+        <TargetObject condition="contains">\Triggers\</TargetObject>
+      </RegistryEvent>
+    </RuleGroup>
+
+    <!-- Event ID 1: Process creation - Service-related processes -->
+    <RuleGroup name="" groupRelation="or">
+      <ProcessCreate onmatch="include">
+        <!-- Monitor sc.exe (Service Control) usage -->
+        <Image condition="end with">sc.exe</Image>
+        
+        <!-- Monitor net.exe for service operations -->
+        <Image condition="end with">net.exe</Image>
+        <CommandLine condition="contains">start</CommandLine>
+        <CommandLine condition="contains">stop</CommandLine>
+        
+        <!-- Monitor PowerShell service cmdlets -->
+        <Image condition="end with">powershell.exe</Image>
+        <CommandLine condition="contains">New-Service</CommandLine>
+        <CommandLine condition="contains">Set-Service</CommandLine>
+        <CommandLine condition="contains">Start-Service</CommandLine>
+        <CommandLine condition="contains">Stop-Service</CommandLine>
+        <CommandLine condition="contains">Remove-Service</CommandLine>
+        <CommandLine condition="contains">Get-Service</CommandLine>
+        
+        <!-- Monitor WMIC service operations -->
+        <Image condition="end with">wmic.exe</Image>
+        <CommandLine condition="contains">service</CommandLine>
+        
+        <!-- Monitor services.exe and related processes -->
+        <Image condition="end with">services.exe</Image>
+        <ParentImage condition="end with">services.exe</ParentImage>
+        
+        <!-- Monitor svchost.exe new instances -->
+        <Image condition="end with">svchost.exe</Image>
+        
+        <!-- Monitor rundll32.exe with service DLLs -->
+        <Image condition="end with">rundll32.exe</Image>
+        <CommandLine condition="contains">ServiceMain</CommandLine>
+        
+        <!-- Monitor regsvr32.exe for service registration -->
+        <Image condition="end with">regsvr32.exe</Image>
+        <CommandLine condition="contains">/i</CommandLine>
+        <CommandLine condition="contains">/n</CommandLine>
+        
+        <!-- Monitor suspicious service executables -->
+        <CommandLine condition="contains">-k</CommandLine>
+        <CommandLine condition="contains">-s</CommandLine>
+        <CommandLine condition="contains">--service</CommandLine>
+        <CommandLine condition="contains">/service</CommandLine>
+      </ProcessCreate>
+    </RuleGroup>
+
+    <!-- Event ID 11: FileCreate - Service-related file creation -->
+    <RuleGroup name="" groupRelation="or">
+      <FileCreate onmatch="include">
+        <!-- Monitor service executable creation -->
+        <TargetFilename condition="contains">\Windows\System32\</TargetFilename>
+        <TargetFilename condition="contains">\Windows\SysWOW64\</TargetFilename>
+        <TargetFilename condition="end with">.exe</TargetFilename>
+        <TargetFilename condition="end with">.dll</TargetFilename>
+        <TargetFilename condition="end with">.sys</TargetFilename>
+        
+        <!-- Monitor service configuration files -->
+        <TargetFilename condition="end with">.inf</TargetFilename>
+        <TargetFilename condition="end with">.xml</TargetFilename>
+        <TargetFilename condition="end with">.config</TargetFilename>
+        
+        <!-- Monitor temporary service files -->
+        <TargetFilename condition="contains">\Temp\</TargetFilename>
+        <TargetFilename condition="contains">service</TargetFilename>
+        <TargetFilename condition="contains">svc</TargetFilename>
+      </FileCreate>
+    </RuleGroup>
+  </EventFiltering>
+</Sysmon>

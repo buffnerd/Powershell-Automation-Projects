@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sysmon schemaversion="4.40">
+  <HashAlgorithms>md5,sha256</HashAlgorithms>
+  <CheckRevocation/>
+  <EventFiltering>
+    <!-- Event ID 11: FileCreate - Sensitive File Access Monitoring -->
+    <RuleGroup name="" groupRelation="or">
+      <FileCreate onmatch="include">
+        <!-- Monitor access to system configuration files -->
+        <TargetFilename condition="contains">\Windows\System32\config\</TargetFilename>
+        <TargetFilename condition="contains">\Windows\System32\drivers\etc\</TargetFilename>
+        <TargetFilename condition="end with">hosts</TargetFilename>
+        <TargetFilename condition="end with">lmhosts</TargetFilename>
+        <TargetFilename condition="end with">networks</TargetFilename>
+        <TargetFilename condition="end with">protocol</TargetFilename>
+        <TargetFilename condition="end with">services</TargetFilename>
+        
+        <!-- Monitor access to boot configuration -->
+        <TargetFilename condition="contains">\Boot\</TargetFilename>
+        <TargetFilename condition="end with">boot.ini</TargetFilename>
+        <TargetFilename condition="end with">bootmgr</TargetFilename>
+        <TargetFilename condition="contains">BCD</TargetFilename>
+        
+        <!-- Monitor access to security databases -->
+        <TargetFilename condition="contains">\Windows\System32\config\SAM</TargetFilename>
+        <TargetFilename condition="contains">\Windows\System32\config\SECURITY</TargetFilename>
+        <TargetFilename condition="contains">\Windows\System32\config\SYSTEM</TargetFilename>
+        <TargetFilename condition="contains">\Windows\System32\config\SOFTWARE</TargetFilename>
+        <TargetFilename condition="contains">\Windows\System32\config\DEFAULT</TargetFilename>
+        
+        <!-- Monitor access to password files -->
+        <TargetFilename condition="end with">passwd</TargetFilename>
+        <TargetFilename condition="end with">shadow</TargetFilename>
+        <TargetFilename condition="end with">.pwd</TargetFilename>
+        <TargetFilename condition="contains">password</TargetFilename>
+        <TargetFilename condition="contains">credential</TargetFilename>
+        
+        <!-- Monitor access to certificate stores -->
+        <TargetFilename condition="contains">\Microsoft\SystemCertificates\</TargetFilename>
+        <TargetFilename condition="contains">\Microsoft\Crypto\</TargetFilename>
+        <TargetFilename condition="end with">.p12</TargetFilename>
+        <TargetFilename condition="end with">.pfx</TargetFilename>
+        <TargetFilename condition="end with">.cer</TargetFilename>
+        <TargetFilename condition="end with">.crt</TargetFilename>
+        <TargetFilename condition="end with">.pem</TargetFilename>
+        <TargetFilename condition="end with">.key</TargetFilename>
+        
+        <!-- Monitor access to SSH keys -->
+        <TargetFilename condition="contains">\.ssh\</TargetFilename>
+        <TargetFilename condition="end with">id_rsa</TargetFilename>
+        <TargetFilename condition="end with">id_dsa</TargetFilename>
+        <TargetFilename condition="end with">id_ecdsa</TargetFilename>
+        <TargetFilename condition="end with">id_ed25519</TargetFilename>
+        <TargetFilename condition="end with">authorized_keys</TargetFilename>
+        <TargetFilename condition="end with">known_hosts</TargetFilename>
+        
+        <!-- Monitor access to browser credential stores -->
+        <TargetFilename condition="contains">\AppData\Local\Google\Chrome\User Data\Default\Login Data</TargetFilename>
+        <TargetFilename condition="contains">\AppData\Local\Microsoft\Edge\User Data\Default\Login Data</TargetFilename>
+        <TargetFilename condition="contains">\AppData\Roaming\Mozilla\Firefox\Profiles\</TargetFilename>
+        <TargetFilename condition="end with">logins.json</TargetFilename>
+        <TargetFilename condition="end with">key4.db</TargetFilename>
+        <TargetFilename condition="end with">key3.db</TargetFilename>
+        
+        <!-- Monitor access to Windows credential stores -->
+        <TargetFilename condition="contains">\Microsoft\Protect\</TargetFilename>
+        <TargetFilename condition="contains">\Microsoft\Vault\</TargetFilename>
+        <TargetFilename condition="contains">\Microsoft\Credentials\</TargetFilename>
+        
+        <!-- Monitor access to application configuration files -->
+        <TargetFilename condition="end with">.config</TargetFilename>
+        <TargetFilename condition="end with">.conf</TargetFilename>
+        <TargetFilename condition="end with">.ini</TargetFilename>
+        <TargetFilename condition="end with">.cfg</TargetFilename>
+        <TargetFilename condition="contains">web.config</TargetFilename>
+        <TargetFilename condition="contains">app.config</TargetFilename>
+        
+        <!-- Monitor access to database files -->
+        <TargetFilename condition="end with">.mdb</TargetFilename>
+        <TargetFilename condition="end with">.accdb</TargetFilename>
+        <TargetFilename condition="end with">.db</TargetFilename>
+        <TargetFilename condition="end with">.sqlite</TargetFilename>
+        <TargetFilename condition="end with">.sqlite3</TargetFilename>
+        
+        <!-- Monitor access to backup files -->
+        <TargetFilename condition="end with">.bak</TargetFilename>
+        <TargetFilename condition="end with">.backup</TargetFilename>
+        <TargetFilename condition="end with">.old</TargetFilename>
+        <TargetFilename condition="contains">backup</TargetFilename>
+      </FileCreate>
+    </RuleGroup>
+
+    <!-- Event ID 2: FileCreateTime - Timestomp detection on sensitive files -->
+    <RuleGroup name="" groupRelation="or">
+      <FileCreateTime onmatch="include">
+        <!-- Monitor timestamp changes on system files -->
+        <TargetFilename condition="contains">\Windows\System32\</TargetFilename>
+        <TargetFilename condition="contains">\Windows\SysWOW64\</TargetFilename>
+        <TargetFilename condition="contains">\Program Files\</TargetFilename>
+        <TargetFilename condition="contains">\Program Files (x86)\</TargetFilename>
+        
+        <!-- Monitor timestamp changes on security-critical files -->
+        <TargetFilename condition="contains">\Windows\System32\config\</TargetFilename>
+        <TargetFilename condition="contains">\Windows\System32\drivers\etc\</TargetFilename>
+        
+        <!-- Monitor timestamp changes on certificates -->
+        <TargetFilename condition="end with">.cer</TargetFilename>
+        <TargetFilename condition="end with">.crt</TargetFilename>
+        <TargetFilename condition="end with">.pfx</TargetFilename>
+        <TargetFilename condition="end with">.p12</TargetFilename>
+      </FileCreateTime>
+    </RuleGroup>
+
+    <!-- Event ID 1: Process creation - Processes accessing sensitive files -->
+    <RuleGroup name="" groupRelation="or">
+      <ProcessCreate onmatch="include">
+        <!-- Monitor credential dumping tools -->
+        <Image condition="contains">mimikatz</Image>
+        <Image condition="contains">procdump</Image>
+        <Image condition="contains">pwdump</Image>
+        <Image condition="contains">fgdump</Image>
+        <Image condition="contains">gsecdump</Image>
+        <Image condition="contains">wce</Image>
+        
+        <!-- Monitor PowerShell credential access -->
+        <Image condition="end with">powershell.exe</Image>
+        <CommandLine condition="contains">Get-Credential</CommandLine>
+        <CommandLine condition="contains">ConvertTo-SecureString</CommandLine>
+        <CommandLine condition="contains">Export-Clixml</CommandLine>
+        <CommandLine condition="contains">Import-Clixml</CommandLine>
+        <CommandLine condition="contains">Invoke-Mimikatz</CommandLine>
+        <CommandLine condition="contains">kerberoast</CommandLine>
+        <CommandLine condition="contains">asreproast</CommandLine>
+        
+        <!-- Monitor registry access to sensitive keys -->
+        <Image condition="end with">reg.exe</Image>
+        <CommandLine condition="contains">HKLM\SAM</CommandLine>
+        <CommandLine condition="contains">HKLM\SECURITY</CommandLine>
+        <CommandLine condition="contains">HKLM\SYSTEM</CommandLine>
+        
+        <!-- Monitor WMIC credential access -->
+        <Image condition="end with">wmic.exe</Image>
+        <CommandLine condition="contains">useraccount</CommandLine>
+        <CommandLine condition="contains">group</CommandLine>
+        <CommandLine condition="contains">logon</CommandLine>
+        
+        <!-- Monitor net.exe for user enumeration -->
+        <Image condition="end with">net.exe</Image>
+        <CommandLine condition="contains">user</CommandLine>
+        <CommandLine condition="contains">group</CommandLine>
+        <CommandLine condition="contains">localgroup</CommandLine>
+        <CommandLine condition="contains">accounts</CommandLine>
+        
+        <!-- Monitor whoami.exe for privilege enumeration -->
+        <Image condition="end with">whoami.exe</Image>
+        <CommandLine condition="contains">/priv</CommandLine>
+        <CommandLine condition="contains">/all</CommandLine>
+        <CommandLine condition="contains">/groups</CommandLine>
+        
+        <!-- Monitor certutil for certificate access -->
+        <Image condition="end with">certutil.exe</Image>
+        <CommandLine condition="contains">-store</CommandLine>
+        <CommandLine condition="contains">-exportPFX</CommandLine>
+        <CommandLine condition="contains">-p</CommandLine>
+      </ProcessCreate>
+    </RuleGroup>
+
+    <!-- Event ID 10: ProcessAccess - Memory access to sensitive processes -->
+    <RuleGroup name="" groupRelation="or">
+      <ProcessAccess onmatch="include">
+        <!-- Monitor access to LSASS (credential store) -->
+        <TargetImage condition="end with">lsass.exe</TargetImage>
+        <GrantedAccess condition="contains">0x1010</GrantedAccess> <!-- PROCESS_VM_READ -->
+        <GrantedAccess condition="contains">0x1038</GrantedAccess> <!-- PROCESS_VM_READ | PROCESS_QUERY_INFORMATION -->
+        <GrantedAccess condition="contains">0x143A</GrantedAccess> <!-- Common credential access -->
+        
+        <!-- Monitor access to services.exe -->
+        <TargetImage condition="end with">services.exe</TargetImage>
+        <GrantedAccess condition="contains">0x1010</GrantedAccess>
+        
+        <!-- Monitor access to winlogon.exe -->
+        <TargetImage condition="end with">winlogon.exe</TargetImage>
+        <GrantedAccess condition="contains">0x1010</GrantedAccess>
+        
+        <!-- Monitor suspicious source processes -->
+        <SourceImage condition="end with">powershell.exe</SourceImage>
+        <SourceImage condition="end with">cmd.exe</SourceImage>
+        <SourceImage condition="end with">rundll32.exe</SourceImage>
+        <SourceImage condition="contains">temp</SourceImage>
+        <SourceImage condition="contains">appdata</SourceImage>
+      </ProcessAccess>
+    </RuleGroup>
+
+    <!-- Event ID 3: Network connection - Data exfiltration -->
+    <RuleGroup name="" groupRelation="or">
+      <NetworkConnect onmatch="include">
+        <!-- Monitor connections from credential access tools -->
+        <Image condition="contains">mimikatz</Image>
+        <Image condition="contains">procdump</Image>
+        <Image condition="contains">pwdump</Image>
+        
+        <!-- Monitor PowerShell connections -->
+        <Image condition="end with">powershell.exe</Image>
+        <DestinationPort condition="is">21</DestinationPort>  <!-- FTP -->
+        <DestinationPort condition="is">22</DestinationPort>  <!-- SSH -->
+        <DestinationPort condition="is">80</DestinationPort>  <!-- HTTP -->
+        <DestinationPort condition="is">443</DestinationPort> <!-- HTTPS -->
+        <DestinationPort condition="is">993</DestinationPort> <!-- IMAPS -->
+        <DestinationPort condition="is">995</DestinationPort> <!-- POP3S -->
+        
+        <!-- Monitor suspicious outbound connections -->
+        <Image condition="end with">certutil.exe</Image>
+        <Image condition="end with">bitsadmin.exe</Image>
+        <Image condition="end with">reg.exe</Image>
+      </NetworkConnect>
+    </RuleGroup>
+  </EventFiltering>
+</Sysmon>

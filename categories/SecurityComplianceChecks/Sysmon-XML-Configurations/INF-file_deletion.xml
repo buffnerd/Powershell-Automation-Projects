@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sysmon schemaversion="4.40">
+  <HashAlgorithms>md5,sha256</HashAlgorithms>
+  <CheckRevocation/>
+  <EventFiltering>
+    <!-- Event ID 23: FileDelete (File Delete archived) -->
+    <RuleGroup name="" groupRelation="or">
+      <FileDelete onmatch="include">
+        <!-- Monitor deletion of important system files -->
+        <TargetFilename condition="contains">\Windows\System32\</TargetFilename>
+        <TargetFilename condition="contains">\Windows\SysWOW64\</TargetFilename>
+        
+        <!-- Monitor deletion of security-related files -->
+        <TargetFilename condition="contains">\Windows\System32\config\</TargetFilename>
+        <TargetFilename condition="contains">\Windows\System32\winevt\Logs\</TargetFilename>
+        
+        <!-- Monitor deletion of executable files -->
+        <TargetFilename condition="end with">.exe</TargetFilename>
+        <TargetFilename condition="end with">.dll</TargetFilename>
+        <TargetFilename condition="end with">.sys</TargetFilename>
+        
+        <!-- Monitor deletion of script files -->
+        <TargetFilename condition="end with">.bat</TargetFilename>
+        <TargetFilename condition="end with">.cmd</TargetFilename>
+        <TargetFilename condition="end with">.ps1</TargetFilename>
+        <TargetFilename condition="end with">.vbs</TargetFilename>
+        <TargetFilename condition="end with">.js</TargetFilename>
+        <TargetFilename condition="end with">.hta</TargetFilename>
+        
+        <!-- Monitor deletion of configuration files -->
+        <TargetFilename condition="end with">.ini</TargetFilename>
+        <TargetFilename condition="end with">.conf</TargetFilename>
+        <TargetFilename condition="end with">.config</TargetFilename>
+        <TargetFilename condition="end with">.xml</TargetFilename>
+        
+        <!-- Monitor deletion of log files -->
+        <TargetFilename condition="end with">.log</TargetFilename>
+        <TargetFilename condition="end with">.evtx</TargetFilename>
+        <TargetFilename condition="end with">.etl</TargetFilename>
+        
+        <!-- Monitor deletion from sensitive directories -->
+        <TargetFilename condition="contains">\Program Files\</TargetFilename>
+        <TargetFilename condition="contains">\Program Files (x86)\</TargetFilename>
+        <TargetFilename condition="contains">\ProgramData\</TargetFilename>
+        
+        <!-- Monitor deletion from user profiles -->
+        <TargetFilename condition="contains">\Users\</TargetFilename>
+        <TargetFilename condition="contains">\AppData\</TargetFilename>
+        
+        <!-- Monitor deletion of backup files -->
+        <TargetFilename condition="end with">.bak</TargetFilename>
+        <TargetFilename condition="end with">.backup</TargetFilename>
+        <TargetFilename condition="end with">.old</TargetFilename>
+        
+        <!-- Monitor deletion of database files -->
+        <TargetFilename condition="end with">.db</TargetFilename>
+        <TargetFilename condition="end with">.mdb</TargetFilename>
+        <TargetFilename condition="end with">.accdb</TargetFilename>
+        <TargetFilename condition="end with">.sqlite</TargetFilename>
+        
+        <!-- Monitor deletion of certificate files -->
+        <TargetFilename condition="end with">.cer</TargetFilename>
+        <TargetFilename condition="end with">.crt</TargetFilename>
+        <TargetFilename condition="end with">.p12</TargetFilename>
+        <TargetFilename condition="end with">.pfx</TargetFilename>
+        
+        <!-- Monitor deletion of security tools -->
+        <TargetFilename condition="contains">procmon</TargetFilename>
+        <TargetFilename condition="contains">procexp</TargetFilename>
+        <TargetFilename condition="contains">autoruns</TargetFilename>
+        <TargetFilename condition="contains">tcpview</TargetFilename>
+        <TargetFilename condition="contains">wireshark</TargetFilename>
+        <TargetFilename condition="contains">volatil</TargetFilename>
+        <TargetFilename condition="contains">sysmon</TargetFilename>
+      </FileDelete>
+    </RuleGroup>
+
+    <!-- Event ID 26: FileDeleteDetected (File Delete logged) -->
+    <RuleGroup name="" groupRelation="or">
+      <FileDeleteDetected onmatch="include">
+        <!-- Monitor deletion detection for critical system files -->
+        <TargetFilename condition="contains">\Windows\System32\drivers\</TargetFilename>
+        <TargetFilename condition="contains">\Windows\System32\config\</TargetFilename>
+        
+        <!-- Monitor deletion of antivirus/security software -->
+        <TargetFilename condition="contains">\Program Files\Windows Defender\</TargetFilename>
+        <TargetFilename condition="contains">\Program Files\Microsoft Security Client\</TargetFilename>
+        <TargetFilename condition="contains">\Program Files (x86)\Windows Defender\</TargetFilename>
+        
+        <!-- Monitor deletion of forensic evidence -->
+        <TargetFilename condition="contains">$Recycle.Bin</TargetFilename>
+        <TargetFilename condition="contains">prefetch</TargetFilename>
+        <TargetFilename condition="contains">recent</TargetFilename>
+        <TargetFilename condition="contains">temp</TargetFilename>
+        
+        <!-- Monitor deletion of browser data -->
+        <TargetFilename condition="contains">\AppData\Local\Microsoft\Windows\WebCache\</TargetFilename>
+        <TargetFilename condition="contains">\AppData\Local\Google\Chrome\User Data\</TargetFilename>
+        <TargetFilename condition="contains">\AppData\Roaming\Mozilla\Firefox\Profiles\</TargetFilename>
+        
+        <!-- Monitor shadow copy deletion -->
+        <TargetFilename condition="contains">Shadow</TargetFilename>
+        <TargetFilename condition="contains">VSS</TargetFilename>
+      </FileDeleteDetected>
+    </RuleGroup>
+  </EventFiltering>
+</Sysmon>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sysmon schemaversion="4.40">
+  <HashAlgorithms>md5,sha256</HashAlgorithms>
+  <CheckRevocation/>
+  <EventFiltering>
+    <!-- Event ID 1: Process creation - Shutdown-related processes -->
+    <RuleGroup name="" groupRelation="or">
+      <ProcessCreate onmatch="include">
+        <!-- Monitor shutdown.exe usage -->
+        <Image condition="end with">shutdown.exe</Image>
+        
+        <!-- Monitor taskkill.exe for forced termination -->
+        <Image condition="end with">taskkill.exe</Image>
+        <CommandLine condition="contains">/f</CommandLine>
+        <CommandLine condition="contains">/im</CommandLine>
+        <CommandLine condition="contains">/pid</CommandLine>
+        
+        <!-- Monitor wmic.exe for system shutdown -->
+        <Image condition="end with">wmic.exe</Image>
+        <CommandLine condition="contains">Win32_OperatingSystem</CommandLine>
+        <CommandLine condition="contains">Shutdown</CommandLine>
+        <CommandLine condition="contains">Reboot</CommandLine>
+        
+        <!-- Monitor PowerShell shutdown commands -->
+        <Image condition="end with">powershell.exe</Image>
+        <CommandLine condition="contains">Stop-Computer</CommandLine>
+        <CommandLine condition="contains">Restart-Computer</CommandLine>
+        <CommandLine condition="contains">shutdown</CommandLine>
+        <CommandLine condition="contains">Win32_OperatingSystem</CommandLine>
+        
+        <!-- Monitor cmd.exe with shutdown commands -->
+        <Image condition="end with">cmd.exe</Image>
+        <CommandLine condition="contains">shutdown</CommandLine>
+        <CommandLine condition="contains">/s</CommandLine>
+        <CommandLine condition="contains">/r</CommandLine>
+        <CommandLine condition="contains">/f</CommandLine>
+        <CommandLine condition="contains">/t</CommandLine>
+        
+        <!-- Monitor rundll32.exe shutdown calls -->
+        <Image condition="end with">rundll32.exe</Image>
+        <CommandLine condition="contains">user32.dll</CommandLine>
+        <CommandLine condition="contains">ExitWindowsEx</CommandLine>
+        <CommandLine condition="contains">shell32.dll</CommandLine>
+        <CommandLine condition="contains">SHExitWindowsEx</CommandLine>
+        
+        <!-- Monitor systeminfo and system state queries -->
+        <Image condition="end with">systeminfo.exe</Image>
+        
+        <!-- Monitor event log clearing before shutdown -->
+        <Image condition="end with">wevtutil.exe</Image>
+        <CommandLine condition="contains">cl</CommandLine>
+        <CommandLine condition="contains">clear-log</CommandLine>
+        
+        <!-- Monitor logoff and user session termination -->
+        <Image condition="end with">logoff.exe</Image>
+        
+        <!-- Monitor registry shutdown settings -->
+        <Image condition="end with">reg.exe</Image>
+        <CommandLine condition="contains">SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System</CommandLine>
+        <CommandLine condition="contains">ShutdownWithoutLogon</CommandLine>
+        <CommandLine condition="contains">UndockWithoutLogon</CommandLine>
+      </ProcessCreate>
+    </RuleGroup>
+
+    <!-- Event ID 12: RegistryEvent (Object create and delete) - Shutdown settings -->
+    <RuleGroup name="" groupRelation="or">
+      <RegistryEvent onmatch="include">
+        <!-- Monitor shutdown policy changes -->
+        <TargetObject condition="contains">SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System</TargetObject>
+        <TargetObject condition="end with">ShutdownWithoutLogon</TargetObject>
+        <TargetObject condition="end with">UndockWithoutLogon</TargetObject>
+        <TargetObject condition="end with">DisableShutdownNamedPipe</TargetObject>
+        
+        <!-- Monitor power management settings -->
+        <TargetObject condition="contains">SYSTEM\CurrentControlSet\Control\Power</TargetObject>
+        <TargetObject condition="contains">SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer</TargetObject>
+        <TargetObject condition="end with">NoClose</TargetObject>
+        
+        <!-- Monitor service shutdown settings -->
+        <TargetObject condition="contains">SYSTEM\CurrentControlSet\Control</TargetObject>
+        <TargetObject condition="end with">WaitToKillServiceTimeout</TargetObject>
+        <TargetObject condition="end with">ServicesPipeTimeout</TargetObject>
+        
+        <!-- Monitor scheduled task shutdown settings -->
+        <TargetObject condition="contains">SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule</TargetObject>
+        <TargetObject condition="contains">TaskScheduler</TargetObject>
+      </RegistryEvent>
+    </RuleGroup>
+
+    <!-- Event ID 13: RegistryEvent (Value Set) - Shutdown configuration -->
+    <RuleGroup name="" groupRelation="or">
+      <RegistryEvent onmatch="include">
+        <!-- Monitor shutdown policy value changes -->
+        <TargetObject condition="contains">SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System</TargetObject>
+        <TargetObject condition="end with">ShutdownWithoutLogon</TargetObject>
+        <TargetObject condition="end with">UndockWithoutLogon</TargetObject>
+        
+        <!-- Monitor power settings changes -->
+        <TargetObject condition="contains">SYSTEM\CurrentControlSet\Control\Power</TargetObject>
+        <TargetObject condition="end with">HibernateEnabled</TargetObject>
+        <TargetObject condition="end with">HiberFileSizePercent</TargetObject>
+        
+        <!-- Monitor shutdown timeout changes -->
+        <TargetObject condition="contains">SYSTEM\ControlSet001\Control</TargetObject>
+        <TargetObject condition="contains">SYSTEM\CurrentControlSet\Control</TargetObject>
+        <TargetObject condition="end with">WaitToKillServiceTimeout</TargetObject>
+        <TargetObject condition="end with">WaitToKillAppTimeout</TargetObject>
+        <TargetObject condition="end with">HungAppTimeout</TargetObject>
+        
+        <!-- Monitor automatic restart settings -->
+        <TargetObject condition="contains">SYSTEM\CurrentControlSet\Control\CrashControl</TargetObject>
+        <TargetObject condition="end with">AutoReboot</TargetObject>
+        <TargetObject condition="end with">CrashDumpEnabled</TargetObject>
+      </RegistryEvent>
+    </RuleGroup>
+
+    <!-- Event ID 4688: Windows Security Log - Process Creation -->
+    <!-- Note: This requires Windows Security Auditing to be enabled -->
+    
+    <!-- Event ID 7: Image loaded - Shutdown-related DLLs -->
+    <RuleGroup name="" groupRelation="or">
+      <ImageLoad onmatch="include">
+        <!-- Monitor loading of shutdown-related libraries -->
+        <ImageLoaded condition="end with">user32.dll</ImageLoaded>
+        <ImageLoaded condition="end with">powrprof.dll</ImageLoaded>
+        <ImageLoaded condition="end with">setupapi.dll</ImageLoaded>
+        <ImageLoaded condition="end with">advapi32.dll</ImageLoaded>
+        
+        <!-- Monitor processes loading these DLLs -->
+        <Image condition="end with">shutdown.exe</Image>
+        <Image condition="end with">rundll32.exe</Image>
+        <Image condition="end with">powershell.exe</Image>
+        <Image condition="end with">cmd.exe</Image>
+      </ImageLoad>
+    </RuleGroup>
+
+    <!-- Event ID 3: Network connection - Pre-shutdown network activity -->
+    <RuleGroup name="" groupRelation="or">
+      <NetworkConnect onmatch="include">
+        <!-- Monitor network connections from shutdown-related processes -->
+        <Image condition="end with">shutdown.exe</Image>
+        <Image condition="end with">wmic.exe</Image>
+        <Image condition="end with">powershell.exe</Image>
+        <Image condition="end with">cmd.exe</Image>
+        
+        <!-- Monitor connections to remote systems for shutdown -->
+        <DestinationPort condition="is">135</DestinationPort> <!-- RPC -->
+        <DestinationPort condition="is">445</DestinationPort> <!-- SMB -->
+        <DestinationPort condition="is">5985</DestinationPort> <!-- WinRM HTTP -->
+        <DestinationPort condition="is">5986</DestinationPort> <!-- WinRM HTTPS -->
+      </NetworkConnect>
+    </RuleGroup>
+  </EventFiltering>
+</Sysmon>
