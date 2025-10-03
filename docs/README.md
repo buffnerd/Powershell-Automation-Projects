@@ -79,4 +79,4 @@ See [how-to-contribute.md](docs/how-to-contribute.md) for guidelines on contribu
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](../LICENSE) file for details.
