@@ -120,34 +120,33 @@ $sb = {
     [int[]]$tcp,[int[]]$udp,[string]$prefix,[bool]$simulate
   )
 
-  # Helper for action execution
-  function Invoke-ActionLocal {
+  $actions = New-Object System.Collections.Generic.List[Object]
+
+  function Do {
     param([string]$Desc,[scriptblock]$Code,[bool]$Sim)
     if ($Sim) { return "DRYRUN: $Desc" }
     try { & $Code; return "OK: $Desc" } catch { return "ERR: $Desc -> $($_.Exception.Message)" }
   }
 
-  $actions = New-Object System.Collections.Generic.List[Object]
-
   # Ensure firewall service is present & running
   $svc = Get-Service -Name mpssvc -ErrorAction SilentlyContinue
   if ($svc -and $svc.Status -ne 'Running') {
-    $actions.Add( Invoke-ActionLocal "Start firewall service" { Start-Service mpssvc } $simulate )
+    $actions.Add( Do -Desc "Start firewall service" -Code { Start-Service mpssvc } -Sim:$simulate )
   }
 
-  if ($dom)  { $actions.Add( Invoke-ActionLocal "Enable Domain profile"   { Set-NetFirewallProfile -Profile Domain  -Enabled True } $simulate ) }
-  if ($priv) { $actions.Add( Invoke-ActionLocal "Enable Private profile"  { Set-NetFirewallProfile -Profile Private -Enabled True } $simulate ) }
-  if ($pub)  { $actions.Add( Invoke-ActionLocal "Enable Public profile"   { Set-NetFirewallProfile -Profile Public  -Enabled True } $simulate ) }
+  if ($dom)  { $actions.Add( Do -Desc "Enable Domain profile"   -Code { Set-NetFirewallProfile -Profile Domain  -Enabled True } -Sim:$simulate ) }
+  if ($priv) { $actions.Add( Do -Desc "Enable Private profile"  -Code { Set-NetFirewallProfile -Profile Private -Enabled True } -Sim:$simulate ) }
+  if ($pub)  { $actions.Add( Do -Desc "Enable Public profile"   -Code { Set-NetFirewallProfile -Profile Public  -Enabled True } -Sim:$simulate ) }
 
   # Built-in allow groups
   if ($winrm) {
-    $actions.Add( Invoke-ActionLocal "Enable WinRM rules" { Enable-NetFirewallRule -DisplayGroup "Windows Remote Management" } $simulate )
+    $actions.Add( Do -Desc "Enable WinRM rules" -Code { Enable-NetFirewallRule -DisplayGroup "Windows Remote Management" } -Sim:$simulate )
   }
   if ($rdp) {
-    $actions.Add( Invoke-ActionLocal "Enable Remote Desktop rules" { Enable-NetFirewallRule -DisplayGroup "Remote Desktop" } $simulate )
+    $actions.Add( Do -Desc "Enable Remote Desktop rules" -Code { Enable-NetFirewallRule -DisplayGroup "Remote Desktop" } -Sim:$simulate )
   }
   if ($fps) {
-    $actions.Add( Invoke-ActionLocal "Enable File and Printer Sharing rules" { Enable-NetFirewallRule -DisplayGroup "File and Printer Sharing" } $simulate )
+    $actions.Add( Do -Desc "Enable File and Printer Sharing rules" -Code { Enable-NetFirewallRule -DisplayGroup "File and Printer Sharing" } -Sim:$simulate )
   }
 
   # Custom port rules
@@ -155,16 +154,16 @@ $sb = {
     $unique = $tcp | Select-Object -Unique
     foreach ($p in $unique) {
       $name = "$prefix-TCP-$p"
-      $actions.Add( Invoke-ActionLocal "Open TCP $p ($name)" { New-NetFirewallRule -DisplayName $name -Direction Inbound -Action Allow -Protocol TCP -LocalPort $p -Profile Any -EdgeTraversalPolicy Block -ErrorAction Stop } $simulate )
+      $actions.Add( Do -Desc "Open TCP $p ($name)" -Code { New-NetFirewallRule -DisplayName $name -Direction Inbound -Action Allow -Protocol TCP -LocalPort $p -Profile Any -EdgeTraversalPolicy Block -ErrorAction Stop } -Sim:$simulate )
     }
   }
   if ($udp -and $udp.Count -gt 0) {
     $unique = $udp | Select-Object -Unique
     foreach ($p in $unique) {
       $name = "$prefix-UDP-$p"
-      $actions.Add( Invoke-ActionLocal "Open UDP $p ($name)" { New-NetFirewallRule -DisplayName $name -Direction Inbound -Action Allow -Protocol UDP -LocalPort $p -Profile Any -EdgeTraversalPolicy Block -ErrorAction Stop } $simulate )
+      $actions.Add( Do -Desc "Open UDP $p ($name)" -Code { New-NetFirewallRule -DisplayName $name -Direction Inbound -Action Allow -Protocol UDP -LocalPort $p -Profile Any -EdgeTraversalPolicy Block -ErrorAction Stop } -Sim:$simulate )
     }
-    }
+  }
   # Return actions
   return $actions
 }
